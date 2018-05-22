@@ -16,6 +16,10 @@ VS Code Extension to hide/show window's title bar on Windows platform
 
 You can always modify those default hotkeys.
 
+## Known bugs
+
+* Sometimes it might fail to load, just reload the vscode window and wait before pressing the above hotkeys (or the assigned)
+
 ## Links
 
 

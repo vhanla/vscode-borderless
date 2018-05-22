@@ -1,10 +1,11 @@
 {
 	"name": "borderless",
-	"displayName": "Window Border Toggler",
+	"displayName": "VSCode Borderless",
 	"description": "VS Code Extension to set window to borderless on Windows platform.",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "vhanla",
 	"license": "MIT",
+	"icon": "images/borderlessicon.png",
 	"engines": {
 		"vscode": "^1.12.0"
 	},
