@@ -10,8 +10,13 @@ function activate(context) {
 	context.subscriptions.push(ps)
 	ps.addCommand(`Add-Type -Path '${path}'`)
 
-	function toggleBorder(visible) {
-		ps.addCommand(`[CBS]::ToggleBorder(${process.pid}, ${visible})`)
+	function toggleBorder(visible, borderType) {
+		let bordertype = 0;
+		switch (borderType){
+			case 'bordersizable': bordertype = 1; break;
+			case 'bordersimple': bordertype = 2; break;
+		}
+		ps.addCommand(`[CBS]::ToggleBorder(${process.pid}, ${visible}, ${bordertype})`)
 		ps.invoke().then(res => {
 			// console.log(res)
 			console.log(`Borderless: set visible ${visible}`)
@@ -24,12 +29,22 @@ function activate(context) {
 
 	context.subscriptions.push(vscode.commands.registerCommand('borderless.on', () => {
 		// vscode.window.showInformationMessage('Title Bars enabled.')
-		toggleBorder(0)
+		toggleBorder(0,'any')
 	}))
 
 	context.subscriptions.push(vscode.commands.registerCommand('borderless.off', () => {
-		toggleBorder(1)
+		const config = vscode.workspace.getConfiguration('borderless')
+		const enabled = config.get('autoenable')
+		const bordertype = config.get('bordertype')
+		toggleBorder(1,bordertype)
 	}))
+
+	const config = vscode.workspace.getConfiguration('borderless')
+	const enabled = config.get('autoenable')
+	const bordertype = config.get('bordertype')
+	if (enabled){
+		toggleBorder(1, bordertype)
+	}
 }
 exports.activate = activate
 

@@ -2,7 +2,7 @@
 	"name": "borderless",
 	"displayName": "VSCode Borderless",
 	"description": "VS Code Extension to set window to borderless on Windows platform.",
-	"version": "0.0.2",
+	"version": "1.0.0",
 	"publisher": "vhanla",
 	"license": "MIT",
 	"icon": "images/borderlessicon.png",
@@ -28,15 +28,20 @@
 		"configuration": {
 			"title": "Window Borderless configuration",
 			"properties": {
-				"borderless.on": {
-					"type": "integer",
-					"default": 1,
-					"description": "Enable Window's border"
+				"borderless.autoenable": {
+					"type": "boolean",
+					"default": false,
+					"description": "Apply borderless on startup"
 				},
-				"borderless.off": {
-					"type": "integer",
-					"default": 0,
-					"description": "Disable Window's border"
+				"borderless.bordertype": {
+					"type": "string",
+					"default": "borderless",
+					"enum": [
+						"borderless",
+						"bordersizable",
+						"bordersimple"
+					],
+					"description": "Type of optional titleless window border"
 				}
 			}
 		},
