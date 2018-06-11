@@ -6,6 +6,13 @@ public static class CBS {
 	private const int GWL_STYLE 	= -16;
 	private const int WS_CAPTION 	= 0x00C00000;
 	private const int WS_THICKFRAME	= 0x00040000;
+	private const int WS_MAXIMIZE = 0x01000000;
+
+	private const int WM_NCLBUTTONDBLCLK = 0x00A3;
+	private const int WM_SYSCOMMAND = 0x0112;
+	private const int SC_MAXIMIZE = 0xF030;
+	private const int SC_RESTORE = 0xF120;
+	private const int SC_MINIMIZE = 0xF020;
 
 	private const int SWP_ASYNCWINDOWPOS = 0x4000;
 	private const int SwP_DEFERERASE = 0x2000;
@@ -38,6 +45,8 @@ public static class CBS {
 	private static extern bool UpdateWindow(int hWnd);
 	[DllImport("user32.dll")]
 	private static extern bool SetWindowPos(int hWnd, int hWndInserAfter, int x, int y, int cx, int cy, int uFlags);
+	[DllImport("user32.dll")]
+	private static extern int PostMessage(int hWnd, uint Msg, int wParam, int lParam);
 
 	public static bool ToggleBorder(int pid, byte state) {
 		Process mainproc = Process.GetProcessById(pid);
@@ -57,6 +66,11 @@ public static class CBS {
 							UpdateWindow(hWnd);
 							int swpFlags = SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOZORDER | SWP_NOSIZE | SWP_NOACTIVATE;
 							SetWindowPos(hWnd, 0, 0, 0, 0, 0, swpFlags);
+							if ((windowLong & WS_MAXIMIZE) == WS_MAXIMIZE)
+							{
+								PostMessage(hWnd, WM_SYSCOMMAND, SC_RESTORE, 0);
+								PostMessage(hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+							}
 						}
 						return true;
 					}, 0);
